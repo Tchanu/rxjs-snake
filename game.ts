@@ -13,9 +13,24 @@ export function tick(deltaTime: number, gameState: GameState, keysState: KeysSta
   const nextHead = getCellNextCord(move, head, deltaTime, (0.6 * Math.log(gameState.tail.length + 148)) - 2);
 
   // border
-  if(nextHead.x < 0 || nextHead.x >= BLOCK_SIZE * (SIZE - 1) || nextHead.y < 0 || nextHead.y >= BLOCK_SIZE * (SIZE - 1)){
-    return STATE_INITIAL;
+  // if(nextHead.x >= BLOCK_SIZE * (SIZE - 1) || nextHead.y < 0 || nextHead.y >= BLOCK_SIZE * (SIZE - 1)){
+  //   return STATE_INITIAL;
+  // }
+
+  if(move === Move.Left && nextHead.x <= 0) {
+    nextHead.x  = BLOCK_SIZE * (SIZE - 1);
   }
+  if(move === Move.Up && nextHead.y < 0) {
+    nextHead.y  = BLOCK_SIZE * (SIZE - 1);
+  }
+  if(move === Move.Right && nextHead.x >= BLOCK_SIZE * (SIZE - 1)) {
+    nextHead.x = 0;
+  }
+  if(move === Move.Down && nextHead.y >= BLOCK_SIZE * (SIZE - 1)) {
+    nextHead.y = 0;
+  }
+
+
 
   // eating
   if(gameState.bait && collideWithBait(nextHead, gameState.bait)) {
